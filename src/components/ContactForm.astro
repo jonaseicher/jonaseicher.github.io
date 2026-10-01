@@ -7,13 +7,11 @@ const formReady = site.formAccessKey.length > 0;
 <form id="contact-form" novalidate data-ready={formReady ? "true" : "false"}>
   {
     !formReady && (
-      <p class="notice" id="delivery-notice">
-        Please contact me directly on{" "}
-        <a href={site.linkedin} rel="noopener noreferrer">
-          LinkedIn
-        </a>
-        .
-      </p>
+      <p
+        class="notice"
+        id="delivery-notice"
+        set:html={`Please contact me directly on <a href="${site.linkedin}" rel="noopener noreferrer">LinkedIn</a>.`}
+      />
     )
   }
 
