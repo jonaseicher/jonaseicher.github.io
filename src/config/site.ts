@@ -184,7 +184,7 @@ export const record = [
     detail: "Eckert & Partner, Munich.",
   },
   {
-    period: "Since 2021",
+    period: "Since 2024",
     title: "Chief technology officer",
     detail:
       "InformMe GmbH, healthcare software, alongside the independent practice.",
