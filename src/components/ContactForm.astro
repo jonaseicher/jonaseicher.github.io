@@ -1,5 +1,5 @@
 ---
-import { interests, isPlaceholder, site } from "../config/site";
+import { interests, site } from "../config/site";
 
 const formReady = site.formAccessKey.length > 0;
 ---
@@ -8,20 +8,11 @@ const formReady = site.formAccessKey.length > 0;
   {
     !formReady && (
       <p class="notice" id="delivery-notice">
-        Message delivery is not active yet. Until it is, this form does not
-        send.
-        {isPlaceholder(site.legal.email) ? (
-          <>
-            {" "}
-            A direct email address will be published here once it is confirmed.
-          </>
-        ) : (
-          <>
-            {" "}
-            Write directly to{" "}
-            <a href={`mailto:${site.legal.email}`}>{site.legal.email}</a>.
-          </>
-        )}
+        Please contact me directly on{" "}
+        <a href={site.linkedin} rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        .
       </p>
     )
   }
@@ -153,11 +144,11 @@ const formReady = site.formAccessKey.length > 0;
 
     const emailIsPlaceholder = fallbackEmail.startsWith("[");
     const directLine = emailIsPlaceholder
-      ? "A direct email address is not published yet."
+      ? "Please contact me directly on LinkedIn."
       : `Write directly to ${fallbackEmail}.`;
 
     if (form.dataset.ready !== "true" || !accessKey) {
-      showStatus(`Message delivery is not active yet. ${directLine}`, "error");
+      showStatus("Please contact me directly on LinkedIn.", "error");
       return;
     }
 
