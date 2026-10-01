@@ -1,0 +1,197 @@
+---
+import { interests, isPlaceholder, site } from "../config/site";
+
+const formReady = site.formAccessKey.length > 0;
+---
+
+<form id="contact-form" novalidate data-ready={formReady ? "true" : "false"}>
+  {
+    !formReady && (
+      <p class="notice" id="delivery-notice">
+        Message delivery is not active yet. Until it is, this form does not
+        send.
+        {isPlaceholder(site.legal.email) ? (
+          <>
+            {" "}
+            A direct email address will be published here once it is confirmed.
+          </>
+        ) : (
+          <>
+            {" "}
+            Write directly to{" "}
+            <a href={`mailto:${site.legal.email}`}>{site.legal.email}</a>.
+          </>
+        )}
+      </p>
+    )
+  }
+
+  <label>
+    Name
+    <input name="name" type="text" autocomplete="name" required />
+    <span class="field-error" data-error-for="name"></span>
+  </label>
+
+  <label>
+    Work email
+    <input
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      required
+    />
+    <span class="field-error" data-error-for="email"></span>
+  </label>
+
+  <label>
+    Organization
+    <input
+      name="organization"
+      type="text"
+      autocomplete="organization"
+      required
+    />
+    <span class="field-error" data-error-for="organization"></span>
+  </label>
+
+  <label>
+    Area of interest
+    <select name="interest" required>
+      <option value="">Select</option>
+      {
+        interests.map((interest) => (
+          <option value={interest}>{interest}</option>
+        ))
+      }
+    </select>
+    <span class="field-error" data-error-for="interest"></span>
+  </label>
+
+  <label>
+    Message
+    <textarea name="message" required></textarea>
+    <span class="field-error" data-error-for="message"></span>
+  </label>
+
+  <p class="form-status" data-status hidden></p>
+  <button class="button" type="submit">Send message</button>
+</form>
+
+<script
+  define:vars={{
+    accessKey: site.formAccessKey,
+    fallbackEmail: site.legal.email,
+  }}
+>
+  const form = document.querySelector("#contact-form");
+  if (!(form instanceof HTMLFormElement)) {
+    throw new Error("Contact form is missing");
+  }
+
+  const status = form.querySelector("[data-status]");
+  if (!(status instanceof HTMLElement)) {
+    throw new Error("Contact form status is missing");
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const fields = ["name", "email", "organization", "interest", "message"];
+
+  const valueOf = (name) => {
+    const field = form.elements.namedItem(name);
+    if (
+      field instanceof HTMLInputElement ||
+      field instanceof HTMLTextAreaElement ||
+      field instanceof HTMLSelectElement
+    ) {
+      return field.value.trim();
+    }
+    return "";
+  };
+
+  const setError = (name, message) => {
+    const slot = form.querySelector(`[data-error-for="${name}"]`);
+    if (slot) slot.textContent = message;
+  };
+
+  const validate = () => {
+    let valid = true;
+    for (const name of fields) {
+      const value = valueOf(name);
+      let message = "";
+      if (!value) message = "This field is required.";
+      else if (name === "email" && !emailPattern.test(value))
+        message = "Enter a valid work email.";
+      if (message) valid = false;
+      setError(name, message);
+    }
+    return valid;
+  };
+
+  form.addEventListener("input", (event) => {
+    const target = event.target;
+    if (
+      target instanceof HTMLElement &&
+      "name" in target &&
+      typeof target.name === "string"
+    ) {
+      setError(target.name, "");
+    }
+  });
+
+  const showStatus = (message, tone) => {
+    status.hidden = false;
+    status.dataset.tone = tone;
+    status.textContent = message;
+  };
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    status.hidden = true;
+    status.textContent = "";
+    if (!validate()) return;
+
+    const emailIsPlaceholder = fallbackEmail.startsWith("[");
+    const directLine = emailIsPlaceholder
+      ? "A direct email address is not published yet."
+      : `Write directly to ${fallbackEmail}.`;
+
+    if (form.dataset.ready !== "true" || !accessKey) {
+      showStatus(`Message delivery is not active yet. ${directLine}`, "error");
+      return;
+    }
+
+    const button = form.querySelector('button[type="submit"]');
+    if (button instanceof HTMLButtonElement) button.disabled = true;
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Enquiry from ${valueOf("name")} (${valueOf("organization")})`,
+          name: valueOf("name"),
+          email: valueOf("email"),
+          organization: valueOf("organization"),
+          interest: valueOf("interest"),
+          message: valueOf("message"),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        showStatus(`The message could not be sent. ${directLine}`, "error");
+        return;
+      }
+      form.reset();
+      showStatus("Thank you. The message has been sent.", "ok");
+    } catch {
+      showStatus(`The message could not be sent. ${directLine}`, "error");
+    } finally {
+      if (button instanceof HTMLButtonElement) button.disabled = false;
+    }
+  });
+</script>

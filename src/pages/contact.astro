@@ -1,0 +1,41 @@
+---
+import ContactForm from "../components/ContactForm.astro";
+import Base from "../layouts/Base.astro";
+import { site } from "../config/site";
+---
+
+<Base
+  title="Contact"
+  description="Contact Jonas Eicher about engineering, DevOps, product ownership, or Scrum engagements."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Contact</p>
+      <h1>Start a conversation.</h1>
+      <p class="lede">
+        Share the organisation, the work in front of you, and the kind of help
+        you are looking for. A short note is enough.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap contact-layout">
+    <ContactForm />
+    <aside class="aside">
+      <h2>Elsewhere</h2>
+      <p>
+        The public professional record is on LinkedIn, including the independent
+        practice since 2017.
+      </p>
+      <p>
+        <a href={site.linkedin} rel="noopener noreferrer"
+          >linkedin.com/in/jonas-eicher</a
+        >
+      </p>
+      <p>
+        Messages sent through this form are covered by the
+        <a href="/privacy">privacy notice</a>.
+      </p>
+    </aside>
+  </div>
+</Base>

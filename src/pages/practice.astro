@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+import { record } from "../config/site";
+---
+
+<Base
+  title="Practice"
+  description="Jonas Eicher’s independent Munich practice: background since 2017, a pragmatic way of working, and a network of external experts."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Practice</p>
+      <h1>An independent practice with a long working record.</h1>
+      <p class="lede">
+        Jonas Eicher is a physicist and software engineer based in Munich. The
+        freelance practice has been the main vehicle for client work since 2017:
+        full-stack engineering, DevOps consulting, product ownership, and Scrum.
+      </p>
+    </div>
+  </header>
+
+  <section class="wrap prose">
+    <p class="section-label">Record</p>
+    <ol class="record">
+      {
+        record.map((item) => (
+          <li>
+            <span class="period">{item.period}</span>
+            <div>
+              <h2>{item.title}</h2>
+              <p>{item.detail}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap prose">
+    <p class="section-label">How the work is run</p>
+    <h2>Pragmatic teams, not a method for its own sake.</h2>
+    <ul class="principles">
+      <li>
+        Small, skilled teams, with room for people to act without waiting to be
+        assigned.
+      </li>
+      <li>
+        Knowledge moves because someone knows it and shares it, not because a
+        ritual extracts it.
+      </li>
+      <li>
+        Transparency is used where it gives direction and builds trust between
+        the team and the people using the product.
+      </li>
+      <li>
+        Whoever can solve a problem does. Whoever knows a better way says so.
+      </li>
+      <li>
+        Agile delivery is a balance of discipline and freedom, initiative and
+        outside dependency, structure and room. Hold that balance and the work
+        gets simpler.
+      </li>
+    </ul>
+  </section>
+
+  <section class="band">
+    <div class="wrap section">
+      <p class="section-label">Expert network</p>
+      <p>
+        The practice is independent, and it is not a one-person ceiling. A broad
+        field of external experts is available when a project is larger or wider
+        than a single discipline: additional engineers, designers,
+        infrastructure specialists, and people who know the client’s domain.
+        They are brought in for the engagement. The client still has one
+        accountable contact.
+      </p>
+    </div>
+  </section>
+</Base>

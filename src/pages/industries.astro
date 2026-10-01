@@ -1,0 +1,31 @@
+---
+import Base from "../layouts/Base.astro";
+import { industries } from "../config/site";
+---
+
+<Base
+  title="Industries"
+  description="Client work across medicine, telecommunications, insurance, automotive, games, automation, process engineering, logistics, startup mentoring, and aeronautics."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Industries</p>
+      <h1>Sectors the practice has worked in.</h1>
+      <p class="lede">
+        The independent business takes on projects for customers across these
+        fields. Each note describes the kind of mandate, not a named account.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap industries">
+    {
+      industries.map((industry) => (
+        <article class="industry" id={industry.id}>
+          <h2>{industry.title}</h2>
+          <p>{industry.body}</p>
+        </article>
+      ))
+    }
+  </div>
+</Base>

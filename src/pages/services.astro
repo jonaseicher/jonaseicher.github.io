@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import { services, stack } from "../config/site";
+---
+
+<Base
+  title="Services"
+  description="Full-stack engineering, DevOps consulting, product ownership, and Scrum from an independent Munich practice."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Services</p>
+      <h1>Four ways the practice is engaged.</h1>
+      <p class="lede">
+        Engagements are often one of these, and sometimes two at once: building
+        the software, standing up the platform, and taking responsibility for
+        the product or the team’s rhythm.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap prose">
+    {
+      services.map((service) => (
+        <article class="service-block">
+          <span class="num">{service.number}</span>
+          <h2>{service.title}</h2>
+          {service.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </article>
+      ))
+    }
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="section-label">Technology</p>
+      <ul class="stack">
+        {stack.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="lede">
+        Front ends are built to suit the product. The named stack is where the
+        long-running implementation and operations work sits.
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,72 @@
+---
+import Base from "../layouts/Base.astro";
+import { isPlaceholder, site } from "../config/site";
+---
+
+<Base
+  title="Privacy"
+  description="Privacy notice for the contact form on Jonas Eicher’s practice site."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Legal</p>
+      <h1>Privacy</h1>
+      <p class="lede">
+        This notice covers the contact form on this website and nothing else.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap prose">
+    <h2>Who is responsible</h2>
+    <p>
+      {site.legal.name}, independent practice, {site.legal.city}, {
+        site.legal.country
+      }.
+      {
+        isPlaceholder(site.legal.email) ? (
+          <span class="placeholder">
+            A contact email will be added to the Impressum.
+          </span>
+        ) : (
+          <a href={`mailto:${site.legal.email}`}>{site.legal.email}</a>
+        )
+      }
+    </p>
+
+    <h2>Contact form</h2>
+    <p>
+      If you send the form, the site transmits your name, work email,
+      organization, area of interest, and message so the enquiry can be
+      answered. The legal basis is steps toward a contract, or legitimate
+      interest in responding to a professional enquiry, under Art. 6 (1) (b) and
+      (f) GDPR.
+    </p>
+    <p>
+      {
+        site.formAccessKey
+          ? "Submissions are sent to Web3Forms, which delivers them by email. This site does not store its own copy of the message."
+          : "Delivery is not active. Until it is switched on, the form validates what you type in the browser and does not transmit it."
+      }
+      When delivery is active, Web3Forms acts as the processor for that transmission.
+      Their privacy information is published at web3forms.com.
+    </p>
+
+    <h2>Hosting and cookies</h2>
+    <p>
+      The site is hosted on GitHub Pages. The host may process connection data
+      such as IP address and browser type in server logs as part of providing
+      the site. This site does not set analytics cookies and does not load a
+      tracking script.
+    </p>
+
+    <h2>Retention and your rights</h2>
+    <p>
+      An enquiry is kept only as long as needed to answer it and to handle any
+      engagement that follows. You can request access, correction, deletion, or
+      restriction, and you can object to processing based on legitimate
+      interest. You can also lodge a complaint with a supervisory authority. In
+      Bavaria that is the Bayerisches Landesamt für Datenschutzaufsicht.
+    </p>
+  </div>
+</Base>

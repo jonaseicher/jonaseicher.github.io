@@ -1,0 +1,77 @@
+---
+import Base from "../layouts/Base.astro";
+import { isPlaceholder, site } from "../config/site";
+
+const { legal } = site;
+---
+
+<Base
+  title="Impressum"
+  description="Legal notice for the independent practice of Jonas Eicher, Munich."
+>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="section-label">Legal</p>
+      <h1>Impressum</h1>
+      <p class="lede">
+        Information according to § 5 of the German Digital Services Act (DDG).
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap prose">
+    <p class="legal-note">
+      Street address, email, and phone shown in brackets are placeholders. They
+      will be replaced with the operator’s details. Until then this notice is
+      not complete.
+    </p>
+
+    <h2>Operator</h2>
+    <p>
+      {legal.name}<br />
+      Independent practice<br />
+      <span class={isPlaceholder(legal.street) ? "placeholder" : undefined}
+        >{legal.street}</span
+      ><br />
+      <span class={isPlaceholder(legal.postalCode) ? "placeholder" : undefined}
+        >{legal.postalCode}</span
+      >
+      {legal.city}<br />
+      {legal.country}
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Phone:
+      <span class={isPlaceholder(legal.phone) ? "placeholder" : undefined}
+        >{legal.phone}</span
+      ><br />
+      Email:
+      {
+        isPlaceholder(legal.email) ? (
+          <span class="placeholder">{legal.email}</span>
+        ) : (
+          <a href={`mailto:${legal.email}`}>{legal.email}</a>
+        )
+      }
+    </p>
+
+    {
+      legal.vatId ? (
+        <p>
+          VAT identification number according to § 27a of the German Value Added
+          Tax Act: {legal.vatId}
+        </p>
+      ) : null
+    }
+
+    <h2>Responsible for content</h2>
+    <p>{legal.name}, address as above.</p>
+
+    <h2>Consumer dispute resolution</h2>
+    <p>
+      The operator is neither obliged nor willing to participate in dispute
+      resolution proceedings before a consumer arbitration board.
+    </p>
+  </div>
+</Base>
